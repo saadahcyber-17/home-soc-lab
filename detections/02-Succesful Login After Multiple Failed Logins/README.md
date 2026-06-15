@@ -72,6 +72,7 @@ The detection identifies accounts that exceed the failed login threshold and sub
 
 * More than **3 failed login attempts**
 * At least **1 successful login event**
+* Successful login occurs within **5 minutes of the failed login sequence**
 
 ### Security Objective
 
@@ -83,6 +84,28 @@ Identify potentially compromised accounts where an attacker may have successfull
 
 ```spl
 index="main" (EventCode=4624 OR EventCode=4625)
-| stats count(eval(EventCode=4625)) as Failed_Logins count(eval(EventCode=4624)) as Successful_Logins by Account_Name
+| stats count(eval(EventCode=4625)) as Failed_Logins count(eval(EventCode=4624)) as Successful_Logins by Account_Name _time
 | where Failed_Logins > 3 AND Successful_Logins > 0
 | sort - Failed_Logins
+```
+
+---
+
+## False Positives
+
+1. A user repeatedly enters an incorrect password before successfully authenticating.
+2. Password changes causing temporary authentication failures.
+3. Keyboard layout mismatches or Caps Lock enabled.
+4. Users logging in from multiple devices or sessions.
+5. Applications using cached or outdated credentials before updating to the correct password.
+
+---
+
+## Remediation Recommendations
+
+1. Immediately review the affected account's authentication history.
+2. Verify whether the login originated from an expected user, host, or location.
+3. Reset the account password if compromise is suspected.
+4. Enable Multi-Factor Authentication (MFA).
+5. Implement account lockout policies to limit brute-force attempts.
+
