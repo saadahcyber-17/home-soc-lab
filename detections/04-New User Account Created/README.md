@@ -85,8 +85,7 @@ Identify unauthorized or suspicious account creation activity that may indicate 
 
 ```spl
 index="main" EventCode=4720
-| table _time ComputerName SubjectUserName TargetUserName
-| sort - _time
+| table _time ComputerName
 ```
 
 ### Query Breakdown
@@ -95,7 +94,6 @@ index="main" EventCode=4720
 | -------------- | --------------------------------------------------- |
 | EventCode=4720 | Filters User Account Creation events                |
 | table          | Displays relevant fields for analysis               |
-| sort - _time   | Shows the most recent account creation events first |
 
 ---
 
