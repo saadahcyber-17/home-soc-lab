@@ -89,7 +89,7 @@ Identify PowerShell execution activity that may indicate malicious command execu
 
 ```spl
 index="main" EventCode=4104
-| table _time ComputerName UserID Message
+| table _time ComputerName Message
 | sort - _time
 ```
 
